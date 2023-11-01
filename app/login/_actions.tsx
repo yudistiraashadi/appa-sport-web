@@ -42,7 +42,6 @@ export async function login(prevState: any, formData: FormData) {
 
   // supabase error
   if (error) {
-    console.log({ error });
     return {
       error: {
         general:

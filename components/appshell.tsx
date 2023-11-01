@@ -23,15 +23,63 @@ import {
   IconLock,
   IconBell,
   IconUserCircle,
+  IconX,
 } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
-import { logout } from "@/app/dashboard/_actions";
-
+import { createClient } from "@/utils/supabase/client";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 
+import { logout } from "@/app/dashboard/_actions";
+import { getSupabaseSession } from "@/utils/auth";
+
 function UserAvatar() {
+  const [user, setUser] = useState<any>();
+
+  // const supabase = createClient();
+
+  useEffect(() => {
+    async function getUserData() {
+      const supabase = createClient();
+      const session = await getSupabaseSession(supabase);
+
+      // fetch profiles data
+      const { data, error } = await supabase
+        .from("profiles")
+        .select(
+          `
+            id,
+            team_name,
+            sport_types ( type )
+          `
+        )
+        .eq("id", session?.user.id)
+        .single();
+
+      if (error) {
+        notifications.show({
+          title: `Error: ${error.code}`,
+          message: error.message,
+          color: "red",
+          icon: <IconX />,
+        });
+      }
+
+      setUser({
+        id: session?.user.id,
+        email: session?.user.email,
+        teamName: data?.team_name,
+        //@ts-ignore
+        sportType: data?.sport_types.type,
+      });
+    }
+
+    getUserData();
+  }, []);
+
   return (
     <Menu width={150} shadow="md">
       <Menu.Target>
@@ -49,8 +97,8 @@ function UserAvatar() {
               size={20}
             /> */}
 
-          <Text fw={500} size="sm" lh={1}>
-            Kediri FC
+          <Text fw={500} size="md" lh={1}>
+            {user && user.teamName}
           </Text>
         </Button>
       </Menu.Target>
@@ -83,7 +131,12 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
           <div className="flex w-full justify-between items-center">
             {/* burger menu and brand logo */}
             <div className="flex items-center space-x-2">
-              <Burger opened={opened} hiddenFrom="sm" size="sm" />
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+              />
 
               <UnstyledButton
                 hiddenFrom="sm"
