@@ -9,6 +9,7 @@ import {
   Alert,
 } from "@mantine/core";
 import { useFormState, useFormStatus } from "react-dom";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 import { login } from "./_actions";
 
@@ -28,7 +29,7 @@ export function LoginForm() {
   return (
     <form action={formAction}>
       {state?.error?.general && (
-        <Alert variant="light" color="red" title="Terjadi Kesalahan" mb="1rem">
+        <Alert variant="light" color="red" icon={<IconInfoCircle />} mb="1rem">
           {state.error.general}
         </Alert>
       )}

@@ -42,9 +42,11 @@ export async function login(prevState: any, formData: FormData) {
 
   // supabase error
   if (error) {
+    console.log({ error });
     return {
       error: {
-        general: "Terjadi kesalahan saat login.",
+        general:
+          error.status === 400 ? "Email atau password salah" : error.message,
       },
     };
   }
