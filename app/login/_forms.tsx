@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { useFormState, useFormStatus } from "react-dom";
 import { IconInfoCircle } from "@tabler/icons-react";
+import Link from "next/link";
 
 import { login } from "./_actions";
 
@@ -53,8 +54,11 @@ export function LoginForm() {
         error={state?.error?.password}
       />
 
+      <div>email: distra96@yahoo.com</div>
+      <div>pass: asdfasdf</div>
+
       <Flex justify="end" mt={"1.5rem"}>
-        <Anchor component="button" size="sm">
+        <Anchor component={Link} href={"#"} size="sm">
           Lupa Password?
         </Anchor>
       </Flex>
