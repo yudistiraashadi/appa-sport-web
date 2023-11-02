@@ -62,12 +62,12 @@ const PLAYER_LIST = [
 
 function PlayerCard(props: (typeof PLAYER_LIST)[number]) {
   return (
-    <Link href={"#!"} className="p-2.5 border rounded-lg hover:bg-gray-100">
+    <Link href={"#!"} className="rounded-lg border p-2.5 hover:bg-gray-100">
       <div className="mb-1">
-        <IconUserFilled className={"w-full h-auto"} />
+        <IconUserFilled className={"h-auto w-full"} />
       </div>
 
-      <div className="font-semibold text-lg mb-1 leading-4">{props.nama}</div>
+      <div className="mb-1 text-lg font-semibold leading-4">{props.nama}</div>
       <div className="text-sm">
         No. {props.nomor} / {props.posisi}
       </div>
@@ -86,7 +86,7 @@ export default async function Dashboard() {
   const session = await getSupabaseSession(supabase);
 
   return (
-    <div className="space-y-4 mt-2">
+    <div className="mt-2 space-y-4">
       {/* breadcrumb */}
       <Breadcrumbs>
         <Anchor component={Link} href={"/dashboard"}>
@@ -101,7 +101,7 @@ export default async function Dashboard() {
           Strategi Utama
         </Title>
 
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 ">
           <Image
             src={formationPlan}
             alt="Formation plan"
@@ -112,8 +112,8 @@ export default async function Dashboard() {
             }}
           />
 
-          <div className="pt-2 md:col-span-3 col-span-1">
-            <div className="font-semibold text-xl">Formasi 1 - 5 - 3 - 2</div>
+          <div className="col-span-1 pt-2 md:col-span-3">
+            <div className="text-xl font-semibold">Formasi 1 - 5 - 3 - 2</div>
             <div className="text-lg">Attacking</div>
           </div>
         </div>
@@ -125,7 +125,7 @@ export default async function Dashboard() {
           Statistik Pemain
         </Title>
 
-        <div className="grid xl:grid-cols-6  md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
           {/* player cards */}
           {PLAYER_LIST.map((player, index) => (
             <PlayerCard {...player} key={index} />

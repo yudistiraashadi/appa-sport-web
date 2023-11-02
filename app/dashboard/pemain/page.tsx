@@ -14,7 +14,7 @@ export default async function Dashboard() {
   const session = await getSupabaseSession(supabase);
 
   return (
-    <div className="space-y-4 mt-2">
+    <div className="mt-2 space-y-4">
       {/* breadcrumb */}
       <Breadcrumbs>
         <Anchor component={Link} href={"/dashboard"}>
