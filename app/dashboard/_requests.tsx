@@ -6,6 +6,9 @@ import { createClient } from "@/utils/supabase/server";
 
 import { getSupabaseSession } from "@/utils/auth";
 
+/**
+ * Get User Data
+ */
 export const getUserData = unstable_cache(
   async () => {
     const cookieStore = cookies();
@@ -20,7 +23,7 @@ export const getUserData = unstable_cache(
               id,
               team_name,
               sport_types ( type )
-            `
+            `,
       )
       .eq("id", session?.user.id)
       .single();
@@ -39,5 +42,37 @@ export const getUserData = unstable_cache(
   {
     tags: ["user-data"],
     revalidate: 10 * 60, // 10 mins
-  }
+  },
+);
+
+export const getPlayersData = unstable_cache(
+  async () => {
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    const session = await getSupabaseSession(supabase);
+
+    // fetch profiles data
+    const { data, error } = await supabase
+      .from("players")
+      .select(
+        `
+          id,
+          name,
+          position,
+          birth_date,
+          height,
+          weight
+        `,
+      )
+      .eq("team_id", session?.user.id);
+
+    if (error) throw error;
+
+    return data;
+  },
+  ["players-data"],
+  {
+    tags: ["players-data"],
+    revalidate: 10 * 60, // 10 mins
+  },
 );

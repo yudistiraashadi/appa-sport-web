@@ -2,88 +2,32 @@ import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 
 import { getSupabaseSession } from "@/utils/auth";
-import { Title, Paper, Breadcrumbs, Anchor, Box, NavLink } from "@mantine/core";
+import { Title, Paper, Breadcrumbs, Anchor } from "@mantine/core";
 import Link from "next/link";
 import Image from "next/image";
-import { IconUserFilled } from "@tabler/icons-react";
 
 import formationPlan from "@/public/formation_plan.png";
-
-const PLAYER_LIST = [
-  {
-    posisi: "GK",
-    nama: "Jordi Alba",
-    nomor: 1,
-    umur: 24,
-    berat: 70,
-    tinggi: 170,
-  },
-  {
-    posisi: "CB",
-    nama: "ALvarez",
-    nomor: 27,
-    umur: 27,
-    berat: 80,
-    tinggi: 182,
-  },
-  {
-    posisi: "GK",
-    nama: "Jordi Alba",
-    nomor: 19,
-    umur: 24,
-    berat: 70,
-    tinggi: 170,
-  },
-  {
-    posisi: "CB",
-    nama: "ALvarez",
-    nomor: 10,
-    umur: 27,
-    berat: 80,
-    tinggi: 182,
-  },
-  {
-    posisi: "GK",
-    nama: "Jordi Alba",
-    nomor: 36,
-    umur: 24,
-    berat: 70,
-    tinggi: 170,
-  },
-  {
-    posisi: "CB",
-    nama: "ALvarez",
-    nomor: 7,
-    umur: 27,
-    berat: 80,
-    tinggi: 182,
-  },
-];
-
-function PlayerCard(props: (typeof PLAYER_LIST)[number]) {
-  return (
-    <Link href={"#!"} className="rounded-lg border p-2.5 hover:bg-gray-100">
-      <div className="mb-1">
-        <IconUserFilled className={"h-auto w-full"} />
-      </div>
-
-      <div className="mb-1 text-lg font-semibold leading-4">{props.nama}</div>
-      <div className="text-sm">
-        No. {props.nomor} / {props.posisi}
-      </div>
-      <div className="text-sm">
-        {props.tinggi} cm / {props.berat} kg
-      </div>
-      <div className="text-sm">{props.umur} tahun</div>
-    </Link>
-  );
-}
+import { PlayerCard } from "@/components/player-card";
 
 export default async function Dashboard() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
   const session = await getSupabaseSession(supabase);
+
+  const { data, error } = await supabase
+    .from("players")
+    .select(
+      `
+        id,
+        name,
+        position,
+        birthDate:birth_date,
+        height,
+        weight
+      `,
+    )
+    .eq("team_id", session?.user.id);
 
   return (
     <div className="mt-2 space-y-4">
@@ -127,9 +71,7 @@ export default async function Dashboard() {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
           {/* player cards */}
-          {PLAYER_LIST.map((player, index) => (
-            <PlayerCard {...player} key={index} />
-          ))}
+          {data?.map((player, index) => <PlayerCard {...player} key={index} />)}
         </div>
       </Paper>
     </div>
