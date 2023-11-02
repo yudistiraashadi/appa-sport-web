@@ -12,7 +12,7 @@ export default function Login() {
       py={"0.5rem"}
       bg={"gray.0"}
     >
-      <Title ta="center" w={600} mb={"2rem"}>
+      <Title ta="center" mb={"2rem"} className="font-semibold">
         APPA Sport
       </Title>
 

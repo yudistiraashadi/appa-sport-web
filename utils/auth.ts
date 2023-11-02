@@ -6,7 +6,7 @@ export async function getSupabaseSession(supabase: SupabaseClient) {
     await supabase.auth.getSession();
 
   // not signed in / session expired
-  if (!sessionData) {
+  if (!sessionData.session) {
     redirect("/");
   }
 

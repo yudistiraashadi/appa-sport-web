@@ -1,5 +1,8 @@
+"use server";
+
 import { z } from "zod";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function login(prevState: any, formData: FormData) {
@@ -32,7 +35,8 @@ export async function login(prevState: any, formData: FormData) {
   }
 
   const { email, password } = result.data;
-  const supabase = createClient();
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   // login with supabase
   const { error } = await supabase.auth.signInWithPassword({

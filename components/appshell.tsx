@@ -23,63 +23,14 @@ import {
   IconLock,
   IconBell,
   IconUserCircle,
-  IconX,
 } from "@tabler/icons-react";
-import { notifications } from "@mantine/notifications";
-
-import { createClient } from "@/utils/supabase/client";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
 
 import Link from "next/link";
 
 import { logout } from "@/app/dashboard/_actions";
-import { getSupabaseSession } from "@/utils/auth";
 
-function UserAvatar() {
-  const [user, setUser] = useState<any>();
-
-  // const supabase = createClient();
-
-  useEffect(() => {
-    async function getUserData() {
-      const supabase = createClient();
-      const session = await getSupabaseSession(supabase);
-
-      // fetch profiles data
-      const { data, error } = await supabase
-        .from("profiles")
-        .select(
-          `
-            id,
-            team_name,
-            sport_types ( type )
-          `
-        )
-        .eq("id", session?.user.id)
-        .single();
-
-      if (error) {
-        notifications.show({
-          title: `Error: ${error.code}`,
-          message: error.message,
-          color: "red",
-          icon: <IconX />,
-        });
-      }
-
-      setUser({
-        id: session?.user.id,
-        email: session?.user.email,
-        teamName: data?.team_name,
-        //@ts-ignore
-        sportType: data?.sport_types.type,
-      });
-    }
-
-    getUserData();
-  }, []);
-
+function UserAvatar({ userData }: { userData: any }) {
   return (
     <Menu width={150} shadow="md">
       <Menu.Target>
@@ -98,7 +49,7 @@ function UserAvatar() {
             /> */}
 
           <Text fw={500} size="md" lh={1}>
-            {user && user.teamName}
+            {userData.teamName}
           </Text>
         </Button>
       </Menu.Target>
@@ -115,7 +66,12 @@ function UserAvatar() {
   );
 }
 
-export function DashboardAppShell({ children }: { children: React.ReactNode }) {
+export function DashboardAppShell({
+  userData,
+  children,
+}: React.PropsWithChildren<{
+  userData: any;
+}>) {
   const [opened, { toggle }] = useDisclosure();
 
   const pathname = usePathname();
@@ -123,8 +79,8 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
   return (
     <AppShell
       header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      padding="md"
+      navbar={{ width: 300, breakpoint: "md", collapsed: { mobile: !opened } }}
+      padding="xs"
     >
       <AppShell.Header>
         <Group h="100%" px="md">
@@ -134,12 +90,12 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
               <Burger
                 opened={opened}
                 onClick={toggle}
-                hiddenFrom="sm"
+                hiddenFrom="md"
                 size="sm"
               />
 
               <UnstyledButton
-                hiddenFrom="sm"
+                hiddenFrom="md"
                 onClick={toggle}
                 className="font-semibold text-xl"
               >
@@ -147,7 +103,7 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
               </UnstyledButton>
 
               <Box
-                visibleFrom="sm"
+                visibleFrom="md"
                 onClick={toggle}
                 className="font-semibold text-xl"
               >
@@ -167,7 +123,7 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
                 <IconBell stroke={1.5} />
               </ActionIcon>
 
-              <UserAvatar />
+              <UserAvatar userData={userData} />
             </div>
           </div>
         </Group>
@@ -186,6 +142,9 @@ export function DashboardAppShell({ children }: { children: React.ReactNode }) {
 
         <NavLink
           label="Daftar Pemain"
+          component={Link}
+          href="/dashboard/pemain"
+          active={pathname.startsWith("/dashboard/pemain")}
           leftSection={<IconUsersGroup size="1.25rem" stroke={1.5} />}
           // childrenOffset={32}
         />
