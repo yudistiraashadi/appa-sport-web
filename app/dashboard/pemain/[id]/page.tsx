@@ -57,20 +57,20 @@ export default async function PemainId({ params }: { params: { id: number } }) {
         </Title>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="col-span-1">
-            <div className="mb-1 text-sm font-semibold">Nama</div>
-            <div className="mb-1 text-sm font-semibold">Posisi</div>
-            <div className="mb-1 text-sm font-semibold">Tanggal Lahir</div>
-            <div className="mb-1 text-sm font-semibold">Tinggi Badan</div>
-            <div className="mb-1 text-sm font-semibold">Berat Badan</div>
+          <div className="col-span-1 space-y-1 text-sm font-semibold">
+            <div>Nama</div>
+            <div>Posisi</div>
+            <div>Tanggal Lahir</div>
+            <div>Tinggi Badan</div>
+            <div>Berat Badan</div>
           </div>
 
-          <div className="col-span-1 md:col-span-3">
-            <div className="mb-1 text-sm">{data?.name}</div>
-            <div className="mb-1 text-sm">{data?.position}</div>
-            <div className="mb-1 text-sm">{formattedBirthDate}</div>
-            <div className="mb-1 text-sm">{data?.height} cm</div>
-            <div className="mb-1 text-sm">{data?.weight} kg</div>
+          <div className="col-span-1 space-y-1 text-sm md:col-span-3">
+            <div>{data?.name}</div>
+            <div>{data?.position}</div>
+            <div>{formattedBirthDate}</div>
+            <div>{data?.height} cm</div>
+            <div>{data?.weight} kg</div>
           </div>
         </div>
       </Paper>

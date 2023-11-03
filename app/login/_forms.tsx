@@ -37,10 +37,12 @@ export function LoginForm() {
 
       <TextInput
         label="Email"
+        type="email"
         styles={{
           input: { backgroundColor: "var(--mantine-color-gray-0)" },
         }}
         name="email"
+        defaultValue={"distra96@yahoo.com"}
         error={state?.error?.email}
       />
 
@@ -51,11 +53,9 @@ export function LoginForm() {
         }}
         mt={"1rem"}
         name="password"
+        defaultValue={"asdfasdf"}
         error={state?.error?.password}
       />
-
-      <div>email: distra96@yahoo.com</div>
-      <div>pass: asdfasdf</div>
 
       <Flex justify="end" mt={"1.5rem"}>
         <Anchor component={Link} href={"#"} size="sm">

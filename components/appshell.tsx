@@ -84,7 +84,7 @@ export function DashboardAppShell({
     >
       <AppShell.Header>
         <Group h="100%" px="md">
-          <div className="flex w-full justify-between items-center">
+          <div className="flex w-full items-center justify-between">
             {/* burger menu and brand logo */}
             <div className="flex items-center space-x-2">
               <Burger
@@ -97,7 +97,7 @@ export function DashboardAppShell({
               <UnstyledButton
                 hiddenFrom="md"
                 onClick={toggle}
-                className="font-semibold text-xl"
+                className="text-xl font-semibold"
               >
                 APPA
               </UnstyledButton>
@@ -105,7 +105,7 @@ export function DashboardAppShell({
               <Box
                 visibleFrom="md"
                 onClick={toggle}
-                className="font-semibold text-xl"
+                className="text-xl font-semibold"
               >
                 APPA
               </Box>
@@ -133,6 +133,7 @@ export function DashboardAppShell({
       <AppShell.Navbar p="xs">
         <NavLink
           label="Profil Tim"
+          onClick={toggle}
           component={Link}
           href="/dashboard"
           active={pathname === "/dashboard"}
@@ -143,6 +144,7 @@ export function DashboardAppShell({
         <NavLink
           label="Daftar Pemain"
           component={Link}
+          onClick={toggle}
           href="/dashboard/pemain"
           active={pathname.startsWith("/dashboard/pemain")}
           leftSection={<IconUsersGroup size="1.25rem" stroke={1.5} />}
@@ -161,7 +163,7 @@ export function DashboardAppShell({
           // childrenOffset={32}
         />
 
-        <div className="flex justify-between items-center pr-4">
+        <div className="flex items-center justify-between pr-4">
           <NavLink
             disabled
             label="Scout"
